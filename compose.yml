@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: bitnami/postgresql
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=db_transfers
+      - POSTGRESQL_PORT_NUMBER=5433
+    volumes:
+      - postgresql:/bitnami/postgresql/_projects/_node
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgresql:
+    name: transfers_postgres
+    driver: local
