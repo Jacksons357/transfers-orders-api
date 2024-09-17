@@ -9,7 +9,7 @@ export async function createTransfer(app: FastifyInstance){
       body: z.object({
         product: z.string(),
         code: z.string(),
-        quantity: z.number(),
+        quantity: z.coerce.string(),
         lote: z.string(),
         validate: z.string(),
         destination: z.string(),

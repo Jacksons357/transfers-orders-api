@@ -12,7 +12,7 @@ export async function updateTransfer(app: FastifyInstance){
       body: z.object({
         product: z.string(),
         code: z.string(),
-        quantity: z.number(),
+        quantity: z.string(),
         lote: z.string(),
         validate: z.string(),
         destination: z.string(),

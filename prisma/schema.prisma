@@ -9,15 +9,15 @@ datasource db {
 }
 
 model Transfer {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   product     String?
   code        String
-  quantity    Int
+  quantity    String
   lote        String?
   validate    String?
   destination String
-  createdAt   DateTime @default(now())
-  updateAt    DateTime @default(now()) @updatedAt
+  createdAt   DateTime? @default(now())
+  updateAt    DateTime? @default(now()) @updatedAt
 
   @@map("transfers")
 }
