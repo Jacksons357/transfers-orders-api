@@ -14,7 +14,7 @@ export async function createTransfer(app: FastifyInstance){
         validate: z.string(),
         destination: z.string(),
         createdAt: z.coerce.date(),
-        updadteAt: z.coerce.date()
+        updateAt: z.coerce.date()
       })
     }
   }, async (request) => {
@@ -26,7 +26,7 @@ export async function createTransfer(app: FastifyInstance){
       validate, 
       destination,
       createdAt,
-      updadteAt
+      updateAt
     } = request.body
 
       const transfer = await prisma.transfer.create({
@@ -38,7 +38,7 @@ export async function createTransfer(app: FastifyInstance){
           validate, 
           destination,
           createdAt,
-          updadteAt
+          updateAt
         }
       })
 
