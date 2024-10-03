@@ -1,4 +1,5 @@
 {
+  "regions": ["iad1"],
   "version": 2,
   "builds": [
     {
@@ -8,7 +9,7 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "/src/routes/$1"
     }
   ]
