@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+}
+
+model Transfer {
+  id          String    @id @default(cuid())
+  product     String?
+  code        String
+  quantity    String
+  lote        String?
+  validate    String?
+  destination String
+  createdAt   DateTime? @default(now())
+  updateAt    DateTime? @default(now()) @updatedAt
+
+  @@map("transfers")
+}
