@@ -4,11 +4,17 @@ import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod
 import { getTransfers } from './routes/get-transfers';
 import { updateTransfer } from './routes/update-transfer';
 import { deleteTransfer } from './routes/delete-transfer';
+import cors from '@fastify/cors'
 
 const app = fastify()
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+app.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+})
 
 app.register(createTransfer)
 app.register(getTransfers)
