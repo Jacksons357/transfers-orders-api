@@ -3,25 +3,27 @@ import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from 'zod'
 import prisma from "../lib/prisma"
 
+const transferIdSchema = z.object({
+  transferId: z.string().cuid()
+})
+
+const transferSchema = z.object({
+  product: z.string(),
+  code: z.string(),
+  quantity: z.string(),
+  lote: z.string(),
+  validate: z.string(),
+  destination: z.string(),
+})
+
 export async function updateTransfer(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().patch('/transfer/:transferId', {
     schema: {
-      params: z.object({
-        transferId: z.string().cuid()
-      }),
-      body: z.object({
-        product: z.string(),
-        code: z.string(),
-        quantity: z.string(),
-        lote: z.string(),
-        validate: z.string(),
-        destination: z.string(),
-        createdAt: z.coerce.date(),
-        updateAt: z.coerce.date()
-      })
+      params: transferIdSchema,
+      body: transferSchema
     }
-  }, async (request) => {
-    const { transferId } = request.params
+  }, async (request, reply) => {
+    const { transferId } = request.params as z.infer<typeof transferIdSchema>
 
     const { 
       product, 
@@ -30,15 +32,17 @@ export async function updateTransfer(app: FastifyInstance){
       lote, 
       validate, 
       destination,
-      createdAt,
-      updateAt
-    } = request.body
+    } = request.body as z.infer<typeof transferSchema>
 
     const transfer = await prisma.transfer.findUnique({
       where: {
         id: transferId
       }
     })
+
+    if(!transfer) {
+      return reply.status(404).send({ error: 'Transfer not found '})
+    }
 
     await prisma.transfer.update({
       where: {
@@ -51,12 +55,10 @@ export async function updateTransfer(app: FastifyInstance){
         lote, 
         validate, 
         destination,
-        createdAt,
-        updateAt
       }
     })
 
-    return { transferId: request.params.transferId }
+    return { transferId }
 
   })
 }

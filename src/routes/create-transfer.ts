@@ -3,19 +3,19 @@ import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from 'zod'
 import prisma from "../lib/prisma"
 
+const transferSchema = z.object({
+  product: z.string(),
+  code: z.string(),
+  quantity: z.coerce.string(),
+  lote: z.string(),
+  validate: z.string(),
+  destination: z.string(),
+})
+
 export async function createTransfer(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().post('/transfers', {
     schema: {
-      body: z.object({
-        product: z.string(),
-        code: z.string(),
-        quantity: z.coerce.string(),
-        lote: z.string(),
-        validate: z.string(),
-        destination: z.string(),
-        createdAt: z.coerce.date(),
-        updateAt: z.coerce.date()
-      })
+      body: transferSchema
     }
   }, async (request) => {
     const { 
@@ -25,9 +25,7 @@ export async function createTransfer(app: FastifyInstance){
       lote, 
       validate, 
       destination,
-      createdAt,
-      updateAt
-    } = request.body
+    } = request.body as z.infer<typeof transferSchema>
 
       const transfer = await prisma.transfer.create({
         data: {
@@ -37,8 +35,7 @@ export async function createTransfer(app: FastifyInstance){
           lote, 
           validate, 
           destination,
-          createdAt,
-          updateAt
+          status: "pending"
         }
       })
 

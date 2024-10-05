@@ -4,14 +4,16 @@ import { z } from 'zod'
 import prisma from "../lib/prisma";
 
 export async function deleteTransfer(app: FastifyInstance) {
+  const paramsSchema = z.object({
+    transferId: z.string().cuid()
+  })
+
   app.withTypeProvider<ZodTypeProvider>().delete('/transfer/:transferId', {
     schema: {
-      params: z.object({
-        transferId: z.string().cuid()
-      })
+      params: paramsSchema
     }
-  }, async (request) => {
-    const { transferId } = request.params
+  }, async (request, reply) => {
+    const { transferId } = request.params as z.infer<typeof paramsSchema>
 
     const transfer = await prisma.transfer.findUnique({
       where: {
@@ -20,7 +22,7 @@ export async function deleteTransfer(app: FastifyInstance) {
     })
 
     if (!transfer) {
-      return 'Transfer not found'
+      return reply.status(404).send('Transfer not found')
     }
 
     await prisma.transfer.delete({
@@ -29,7 +31,7 @@ export async function deleteTransfer(app: FastifyInstance) {
       }
     })
 
-    return 'Transfer removed successfully!'
+    return reply.status(200).send('Transfer removed successfully!')
 
   })
 }

@@ -15,8 +15,9 @@ model Transfer {
   lote        String?
   validate    String?
   destination String
+  status      String    @default("pending")
   createdAt   DateTime? @default(now())
-  updateAt    DateTime? @default(now()) @updatedAt
+  updatedAt   DateTime? @default(now()) @updatedAt
 
   @@map("transfers")
 }
