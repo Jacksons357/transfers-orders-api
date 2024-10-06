@@ -5,7 +5,11 @@ import prisma from "../lib/prisma";
 export async function getTransfers(app: FastifyInstance){
   app.withTypeProvider<ZodTypeProvider>().get('/', 
     async () => {
-      const transfers = await prisma.transfer.findMany()
+      const transfers = await prisma.transfer.findMany({
+        orderBy: {
+          status: 'asc'
+        }
+      })
 
       return { transfers }
   })
