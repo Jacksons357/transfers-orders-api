@@ -14,6 +14,7 @@ const transferSchema = z.object({
   lote: z.string(),
   validate: z.string(),
   destination: z.string(),
+  status: z.string(),
 })
 
 export async function updateTransfer(app: FastifyInstance){
@@ -32,6 +33,7 @@ export async function updateTransfer(app: FastifyInstance){
       lote, 
       validate, 
       destination,
+      status
     } = request.body as z.infer<typeof transferSchema>
 
     const transfer = await prisma.transfer.findUnique({
@@ -55,6 +57,7 @@ export async function updateTransfer(app: FastifyInstance){
         lote, 
         validate, 
         destination,
+        status
       }
     })
 
