@@ -46,7 +46,7 @@ export async function updateTransfer(app: FastifyInstance){
       return reply.status(404).send({ error: 'Transfer not found '})
     }
 
-    await prisma.transfer.update({
+    const updateTransfer = await prisma.transfer.update({
       where: {
         id: transferId
       },
@@ -61,7 +61,7 @@ export async function updateTransfer(app: FastifyInstance){
       }
     })
 
-    return { transferId }
+    return { updateTransfer }
 
   })
 }
