@@ -8,12 +8,6 @@ const transferIdSchema = z.object({
 })
 
 const transferSchema = z.object({
-  product: z.string(),
-  code: z.string(),
-  quantity: z.string(),
-  lote: z.string(),
-  validate: z.string(),
-  destination: z.string(),
   status: z.string(),
 })
 
@@ -27,12 +21,6 @@ export async function updateTransfer(app: FastifyInstance){
     const { transferId } = request.params as z.infer<typeof transferIdSchema>
 
     const { 
-      product, 
-      code, 
-      quantity, 
-      lote, 
-      validate, 
-      destination,
       status
     } = request.body as z.infer<typeof transferSchema>
 
@@ -51,12 +39,6 @@ export async function updateTransfer(app: FastifyInstance){
         id: transferId
       },
       data: {
-        product, 
-        code, 
-        quantity, 
-        lote, 
-        validate, 
-        destination,
         status
       }
     })
