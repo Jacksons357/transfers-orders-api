@@ -3,7 +3,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { userSchema } from '../../@types/schema'
 import type z from 'zod'
 import prisma from '../../lib/prisma'
-import bcript from 'bcrypt'
+import bcrypt from 'bcrypt'
 
 export async function createUser(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -24,7 +24,7 @@ export async function createUser(app: FastifyInstance) {
         if (existingUser) {
           return reply.status(400).send({ error: 'Username already exists' })
         }
-        const hashedPassword = await bcript.hash(password, 10)
+        const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = await prisma.user.create({
           data: {

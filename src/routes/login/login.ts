@@ -22,11 +22,16 @@ export async function login(app: FastifyInstance) {
           where: { username },
         })
 
+        console.log('Fetched user:', user)
+
         if (!user) {
           return reply.status(401).send({ error: 'User or password invalid ' })
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
+
+        console.log('Password provided:', password)
+        console.log('Stored password:', user.password)
 
         if (!isPasswordValid) {
           return reply.status(401).send({ error: 'User or password invalid' })

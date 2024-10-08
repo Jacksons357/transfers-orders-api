@@ -15,8 +15,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  transfer   Transfer?
-  transferId String?
+  transfers Transfer[]
 
   @@map("users")
 }
@@ -31,8 +30,8 @@ model Transfer {
   destination String
   status      String  @default("pending")
 
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now()) @updatedAt

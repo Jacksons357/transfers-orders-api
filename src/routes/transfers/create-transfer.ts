@@ -12,7 +12,7 @@ export async function createTransfer(app: FastifyInstance) {
         body: transferSchema,
       },
     },
-    async (request, reply) => {
+    async request => {
       const { product, code, quantity, lote, validate, destination, userId } =
         request.body as z.infer<typeof transferSchema>
 

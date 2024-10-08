@@ -12,6 +12,7 @@ import { createUser } from './routes/users/create-user'
 import { getUserTransfers } from './routes/users/get-user-transfer'
 import { getUserId } from './routes/users/get-user-id'
 import { login } from './routes/login/login'
+import { deleteUser } from './routes/users/delete-user'
 
 const app = fastify()
 
@@ -30,6 +31,7 @@ app.register(deleteTransfer)
 
 app.register(createUser)
 app.register(getUserId)
+app.register(deleteUser)
 
 app.register(getUserTransfers)
 
