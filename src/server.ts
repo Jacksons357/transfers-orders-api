@@ -11,6 +11,7 @@ import cors from '@fastify/cors'
 import { createUser } from './routes/users/create-user'
 import { getUserTransfers } from './routes/users/get-user-transfer'
 import { getUserId } from './routes/users/get-user-id'
+import { login } from './routes/login/login'
 
 const app = fastify()
 
@@ -31,6 +32,8 @@ app.register(createUser)
 app.register(getUserId)
 
 app.register(getUserTransfers)
+
+app.register(login)
 
 app.listen({ port: 3333 }).then(() => {
   console.log('Server running!')
