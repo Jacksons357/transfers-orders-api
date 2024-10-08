@@ -7,17 +7,35 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
 }
 
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  transfer   Transfer?
+  transferId String?
+
+  @@map("users")
+}
+
 model Transfer {
-  id          String    @id @default(cuid())
+  id          String  @id @default(cuid())
   product     String?
   code        String
   quantity    String
   lote        String?
   validate    String?
   destination String
-  status      String    @default("pending")
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @default(now()) @updatedAt
+  status      String  @default("pending")
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now()) @updatedAt
 
   @@map("transfers")
 }
