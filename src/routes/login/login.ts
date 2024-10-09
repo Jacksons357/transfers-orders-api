@@ -25,7 +25,7 @@ export async function login(app: FastifyInstance) {
         console.log('Fetched user:', user)
 
         if (!user) {
-          return reply.status(401).send({ error: 'User or password invalid ' })
+          return reply.status(401).send({ error: 'User invalid ' })
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
