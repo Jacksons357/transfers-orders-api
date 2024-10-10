@@ -1,10 +1,9 @@
-import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { userSchema } from '../../@types/schema'
+import { userSchema } from '../../schemas/userSchema'
 import type z from 'zod'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import { verifyPassword } from '../../utils/hash'
 import prisma from '../../lib/prisma'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 export async function login(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -14,39 +13,34 @@ export async function login(app: FastifyInstance) {
         body: userSchema,
       },
     },
-    async (request, reply) => {
-      const { username, password } = request.body as z.infer<typeof userSchema>
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { password, username } = req.body as z.infer<typeof userSchema>
 
       try {
         const user = await prisma.user.findUnique({
           where: { username },
         })
 
-        console.log('Fetched user:', user)
-
         if (!user) {
-          return reply.status(401).send({ error: 'User invalid ' })
+          return reply.status(401).send({ error: 'User not found or invalid' })
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isValidPassword = await verifyPassword(password, user.password)
 
-        console.log('Password provided:', password)
-        console.log('Stored password:', user.password)
-
-        if (!isPasswordValid) {
-          return reply.status(401).send({ error: 'User or password invalid' })
+        if (!isValidPassword) {
+          return reply
+            .status(401)
+            .send({ error: 'Password not found or invalid credential' })
         }
 
-        const token = jwt.sign(
-          { id: user.id, username: user.username },
-          process.env.JWT_SECRET as string,
-          { expiresIn: '4h' }
-        )
+        const transfers = await prisma.transfer.findMany({
+          where: { userId: user.id },
+        })
 
-        reply.send({ token })
+        return reply.status(200).send({ user, transfers })
       } catch (error) {
-        console.error('Error loggin in: ', error)
-        return reply.status(500).send({ error: 'Error logging in' })
+        console.error('Error during login: ', error)
+        return reply.status(500).send({ error: 'Error during login' })
       }
     }
   )
