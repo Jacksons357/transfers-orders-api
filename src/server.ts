@@ -48,6 +48,7 @@ server.register(getUser)
 server.register(cors, {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true,
 })
 
 server.listen({ port: 3333 }).then(() => {
