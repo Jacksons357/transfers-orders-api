@@ -19,6 +19,7 @@ import { createTransferUserId } from './routes/transfer/create-transfer-user-id'
 import { getTransferUserId } from './routes/transfer/get-transfer-user-id'
 import { deleteTransfer } from './routes/transfer/delete-transfer'
 import { updateStatusTransfer } from './routes/transfer/update-status-transfer'
+import { deleteUser } from './routes/user/delete-user'
 
 const server = fastify()
 
@@ -55,6 +56,7 @@ server.register(createTransferUserId)
 server.register(getTransferUserId)
 server.register(deleteTransfer)
 server.register(updateStatusTransfer)
+server.register(deleteUser)
 
 server.register(getAllUsers)
 
