@@ -7,7 +7,7 @@ export const transferSchema = z.object({
   lote: z.string().optional(),
   validate: z.string().optional(),
   destination: z.string(),
-  userId: z.string(),
+  userId: z.string().optional(),
 })
 
 export const userSchema = z.object({
@@ -18,4 +18,12 @@ export const userSchema = z.object({
 
 export const userIdSchema = z.object({
   userId: z.string(),
+})
+
+export const typeTransferId = z.object({
+  transferId: z.string().cuid(),
+})
+
+export const typeStatusTransfer = z.object({
+  status: z.enum(['pending', 'sent']),
 })

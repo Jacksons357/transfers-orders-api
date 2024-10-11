@@ -13,6 +13,12 @@ import fastifySwaggerUi from '@fastify/swagger-ui'
 import { authenticateWithLogin } from './routes/auth/authenticate-with-login'
 import fastifyJwt from '@fastify/jwt'
 import { getUser } from './routes/user/get-user'
+import { getAllTransfers } from './routes/transfer/get-all-transfers'
+import { getAllUsers } from './routes/user/get-all-users'
+import { createTransferUserId } from './routes/transfer/create-transfer-user-id'
+import { getTransferUserId } from './routes/transfer/get-transfer-user-id'
+import { deleteTransfer } from './routes/transfer/delete-transfer'
+import { updateStatusTransfer } from './routes/transfer/update-status-transfer'
 
 const server = fastify()
 
@@ -44,6 +50,13 @@ server.register(createTransfer)
 server.register(login)
 server.register(authenticateWithLogin)
 server.register(getUser)
+server.register(getAllTransfers)
+server.register(createTransferUserId)
+server.register(getTransferUserId)
+server.register(deleteTransfer)
+server.register(updateStatusTransfer)
+
+server.register(getAllUsers)
 
 server.register(cors, {
   origin: '*',
