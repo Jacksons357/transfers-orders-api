@@ -15,7 +15,9 @@ export async function createUser(app: FastifyInstance) {
       },
     },
     async (req: FastifyRequest, reply: FastifyReply) => {
-      const { id, username, password } = req.body as z.infer<typeof userSchema>
+      const { codename, username, password } = req.body as z.infer<
+        typeof userSchema
+      >
 
       try {
         const existingUser = await prisma.user.findUnique({
@@ -28,7 +30,7 @@ export async function createUser(app: FastifyInstance) {
 
         const user = await prisma.user.create({
           data: {
-            id,
+            codename,
             username,
             password: await hashPassword(password),
           },

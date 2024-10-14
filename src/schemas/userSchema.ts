@@ -11,7 +11,7 @@ export const transferSchema = z.object({
 })
 
 export const userSchema = z.object({
-  id: z.string(),
+  codename: z.string().optional(),
   username: z.string().min(1),
   password: z.string().min(1),
 })
